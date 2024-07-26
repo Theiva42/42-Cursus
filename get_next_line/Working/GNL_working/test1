@@ -1,0 +1,4 @@
+Notes:
+Aliases are simple text substitutions and cannot accept arguments or parameters like functions can. If you need more flexibility, consider using shell functions instead.
+Avoid using existing command names for aliases to prevent confusion and potential issues.
+Creating and managing aliases can significantly streamline your command-line workflow by reducing typing and making complex commands more accessible.
