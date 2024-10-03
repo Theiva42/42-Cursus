@@ -11,18 +11,35 @@
 /* ************************************************************************** */
 #include "so_long.h"
 
-static void	*ft_memset(void *s, int c, size_t len)
+static char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
 	size_t	i;
-	char *str;
+	size_t	j;
 
 	i = 0;
-	str = (char *)s;
-	while(i < len)
+	if (little[i] == '\0')
+		return ((char *)&big[i]);
+	while (i < len && big[i] != '\0')
 	{
-		*(str + i) = c;
+		j = 0;
+		while (i + j < len && big[i + j] == little[j])
+		{
+			if (little[j + 1] == '\0')
+				return ((char *)&big[i]);
+			j++;
+		}
 		i++;
 	}
+	return (NULL);
+}
+
+static void	*ft_memset(void *s, int c, size_t len)
+{
+	unsigned char *str;
+
+	str = (unsigned char *)s;
+	while(len--)
+		*str++ = (unsigned char)c;
 	return (s);
 }
 
@@ -37,23 +54,46 @@ int	exit_door(t_long *game)
 	while (i < game->heightmap - 1)
 		free(game->map[i++]);
 	free(game->map);
-	exit(0);
+	return(0);
 }
 
 int main(int argc, char **argv)
 {
 	t_long	game;
 
+	// char *argv[] ={"1111111111111\n11111P11111C1\n1000001000101\n1011101000C01\n1C10000001101\n1000111100001\n1010111100111\n1010011C00001\n10C1011111001\n11110000C10E1\n1111111111111"};
 	if (argc != 2)
+	{
+		printf("Error: No map provided for the Game\n");
 		return (0);
-	ft_memset(&game, 0 sizeof(t_long);
+	}
+	int para_len = ft_strlen(argv[1]);
+	if (!ft_strnstr(&argv[1][para_len - 4],".ber", 4))
+	{
+    	printf("Error: Invalid map file provided.\n");
+    	return (1);
+	}
+	ft_memset(&game, 0, sizeof(t_long));
 	create_map(&game, argv);
+	printf("Finished create map\n");
 	check_map(&game);
+	printf("Finished check map\n");
 	game.newmlx = mlx_init();
-	game.mywindow = mlx_new_window(game.newmlx, (game.widthmap * 40), (game.heightmap * 40), "so_long Project");
+	if (!(game.newmlx))
+	{
+    	printf("Failed to initialize MLX\n");
+    	return (1);
+	}
+	game.mywindow = mlx_new_window(game.newmlx, (game.widthmap * 50), (game.heightmap * 50), "so_long Project");
+	if (!(game.mywindow))
+	{
+    	printf("Failed to create window\n");
+    	return (1);
+	}
 	create_images(&game);
 	put_images(&game);
 	mlx_key_hook(game.mywindow, set_controls, &game);
 	mlx_hook(game.mywindow, 17, 0, (void *)exit, 0);
+	//mlx_hook(game.mywindow, 2, 1L<<0, set_controls, NULL);
 	mlx_loop(game.newmlx);
 }

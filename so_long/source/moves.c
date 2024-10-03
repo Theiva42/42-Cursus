@@ -46,7 +46,7 @@ static int	key_up_down(t_long *game, int move)
 
 	i = game->x_axis;
 	j = game->y_axis;
-	if (movement == 13)
+	if (move == 13 || move == 126)
 	{
 		j--;
 		if (game->map[j][i] == '1')
@@ -56,7 +56,7 @@ static int	key_up_down(t_long *game, int move)
 			return (0);
 		game->map[j + 1][i] = '0';
 	}
-	else if (move == 1)
+	else if (move == 1 || move == 125)
 	{
 		j++;
 		if (game->map[j][i] == '1')
@@ -66,7 +66,7 @@ static int	key_up_down(t_long *game, int move)
 			return (0);
 		game->map[j - 1][i] = '0';
 	}
-	printf("Move Count: %i\n", game->counter);
+	printf("Moves Count: %i\n", game->counter);
 	printf("Collectables Left: %i\n", game->collectables);
 	return (1);
 }
@@ -79,7 +79,7 @@ static int	key_left_right(t_long *game, int move)
 
 	i = game->x_axis;
 	j = game->y_axis;
-	if (move == 0)
+	if (move == 0 || move == 123)
 	{
 		i--;
 		if (game->map[j][i] == '1')
@@ -89,7 +89,7 @@ static int	key_left_right(t_long *game, int move)
 			return (0);
 		game->map[j][i + 1] = '0';
 	}
-	else if (move == 2)
+	else if (move == 2 || move == 124)
 	{
 		i++;
 		if (game->map[j][i] == '1')
@@ -99,24 +99,24 @@ static int	key_left_right(t_long *game, int move)
 			return (0);
 		game->map[j][i - 1] = '0';
 	}
-	printf("Move Count: %i\n", game->counter);
+	printf("Moves Count: %i\n", game->counter);
 	printf("Collectables Remaining: %i\n", game->collectables);
 	return (1);
 }
 
-int	moves(int key, t_long *game)
+int	set_controls(int key, t_long *game)
 {
 	int	navigate;
 
 	if (key == 53)
 		exit_door(game);
-	if (key == 13)
+	if (key == 13 || key == 126)
 		navigate = key_up_down(game, key);
-	if (key == 1)
+	if (key == 1 || key == 125)
 		navigate = key_up_down(game, key);
-	if (key == 0)
+	if (key == 0 || key == 123)
 		navigate = key_left_right(game, key);
-	if (key == 2)
+	if (key == 2 || key == 124)
 		navigate = key_left_right(game, key);
 	if (navigate)
 		put_images(game);
