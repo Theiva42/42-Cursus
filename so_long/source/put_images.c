@@ -31,7 +31,7 @@ void	create_images(t_long *game)
 	int	i;
 	int j;
 
-	printf("I am here in create images");
+	//printf("I am here in create images");
 	game->floor = mlx_xpm_file_to_image(game->newmlx, "assets/floor.xpm", &i, &j);
 	game->blocks = mlx_xpm_file_to_image(game->newmlx, "assets/blocks.xpm", &i, &j);
 	game->player = mlx_xpm_file_to_image(game->newmlx, "assets/mickey.xpm", &i, &j);
@@ -46,7 +46,7 @@ void put_images(t_long *game)
 
 	game->collectables = 0;
 	height = 0;
-	printf("Heightmap: %d", game->heightmap);
+	//printf("x-axis: %d, y-axis: %d\n", game->x_axis, game->y_axis);
 	while (height < game->heightmap)
 	{
 		width = 0;

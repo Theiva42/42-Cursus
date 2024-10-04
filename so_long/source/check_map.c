@@ -50,7 +50,7 @@ static void check_walls(t_long *game)
 
 	v_wall = vertical_wall(game);
 	h_wall = horizontal_wall(game);
-	printf("I am here in check walls");
+	//printf("I am here in check walls");
 	if (!v_wall)
 	{
 		//Use ft_printf later
@@ -101,10 +101,10 @@ static void	check_chars(t_long *game)
 		}
 		height++;
 	}
-	printf("%i", game->heightmap);
+	//printf("%i", game->heightmap);
 	if (!(game->playercount == 1 && game->columncount > 1 && game->exitcount == 1))
 	{
-		printf("%i, %i, %i", game->playercount, game->columncount, game->exitcount);
+		//printf("%i, %i, %i", game->playercount, game->columncount, game->exitcount);
 		printf("\nError in Player or Collectables or Exit\n");
 		exit_door(game);
 	}
@@ -112,7 +112,7 @@ static void	check_chars(t_long *game)
 
 void	check_map(t_long *game)
 {
-	printf("I am here in check map");
+	//printf("I am here in check map");
 	check_walls(game);
 	check_chars(game);
 }

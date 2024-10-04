@@ -35,7 +35,7 @@ static int	add_line(t_long *game, char *line)
 	if (!temp)
 		return (0);
 	temp[game->heightmap] = NULL;
-	printf("height: %d\n",game->heightmap);
+	//printf("height: %d\n",game->heightmap);
 	while (i < game->heightmap - 1)
 	{
 		temp[i] = game->map[i];
@@ -53,7 +53,7 @@ int create_map(t_long *game, char **argv)
 	char	*map;
 
 	game->fd = open(argv[1], O_RDONLY);
-	printf("argv:%s\n", argv[1]);
+	//printf("argv:%s\n", argv[1]);
 	if (game->fd < 0)
 	{
 		printf("Error: Cannot open Map file. %d\n", game->fd);
@@ -63,13 +63,13 @@ int create_map(t_long *game, char **argv)
 	{
 		map = get_next_line(game->fd);
 		if (!add_line(game, map))
-		{ 
-			printf("I am stopping while properly");
+		{
+			free (map);
 			break ;
 		}
 	}
 	close (game->fd);
 	game->widthmap = width_of_map(game->map[0]);
-	printf("Map width: %d, height: %d\n", game->widthmap, game->heightmap);
+	//printf("Map width: %d, height: %d\n", game->widthmap, game->heightmap);
 	return(1);
 }

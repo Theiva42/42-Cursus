@@ -49,11 +49,29 @@ int	exit_door(t_long *game)
 
 	i = 0;
 	if (game->mywindow)
+	{
 		mlx_destroy_window(game->newmlx, game->mywindow);
-	free(game->newmlx);
-	while (i < game->heightmap - 1)
-		free(game->map[i++]);
+		game->mywindow = NULL;
+	}
+	 if (game->newmlx)
+    {
+        free(game->newmlx);
+        game->newmlx = NULL;  // Set to NULL to avoid dangling pointer
+    }
+	if (game->map)
+    {
+        while (i < game->heightmap - 1)
+        {
+            if (game->map[i])   // Check if the row exists before freeing
+            {
+                free(game->map[i]);
+                game->map[i] = NULL;  // Set to NULL to avoid dangling pointer
+            }
+            i++;
+        }
 	free(game->map);
+	game->map = NULL;
+	}
 	return(0);
 }
 
@@ -75,9 +93,9 @@ int main(int argc, char **argv)
 	}
 	ft_memset(&game, 0, sizeof(t_long));
 	create_map(&game, argv);
-	printf("Finished create map\n");
+	//printf("Finished create map\n");
 	check_map(&game);
-	printf("Finished check map\n");
+	//printf("Finished check map\n");
 	game.newmlx = mlx_init();
 	if (!(game.newmlx))
 	{

@@ -21,22 +21,6 @@
 # include "getnextline/get_next_line.h"
 # include "minilibx-linux/mlx.h"
 
-# define IMG_W 32
-# define IMG_H 32
-# define ESC 53
-# define W 13
-# define A 0
-# define S 1
-# define D 2
-# define UARROW 126
-# define LARROW 123
-# define DARROW 125
-# define RARROW 124
-# define UP -1
-# define DOWN 1
-# define LEFT -1
-# define RIGHT 1
-
 typedef struct t_start
 {
 	int			fd;
