@@ -95,8 +95,8 @@ static int	key_left_right(t_long *game, int move)
 		k = right_move(game, i, j);
 		if (k <= 0)
 			return (0);
-	 	 if (j >= 0 && j < game->heightmap && i + 1 >= 0 && i + 1 < game->widthmap)
-		game->map[j][i + 1] = '0';
+	 	 if (!(j < 0 && j > game->heightmap && i + 1 < 0 && i + 1 > game->widthmap))
+			game->map[j][i + 1] = '0';
 	}
 	else if (move == 100 || move == 65363)
 	{
@@ -108,7 +108,7 @@ static int	key_left_right(t_long *game, int move)
 		k = right_move(game, i, j);
 		if (k <= 0)
 			return (0);
-		if (j >= 0 && j < game->heightmap && i - 1 >= 0 && i - 1 < game->widthmap)
+		if (!(j < 0 && j > game->heightmap && i - 1 < 0 && i - 1 > game->widthmap))
 			game->map[j][i - 1] = '0';
 	}
 	printf("Moves Count: %i\n", game->counter);

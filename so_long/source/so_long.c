@@ -92,7 +92,9 @@ int main(int argc, char **argv)
     	return (1);
 	}
 	ft_memset(&game, 0, sizeof(t_long));
-	create_map(&game, argv);
+	int map = create_map(&game, argv);
+	if (!map)
+		return (1);
 	//printf("Finished create map\n");
 	check_map(&game);
 	//printf("Finished check map\n");
@@ -111,6 +113,7 @@ int main(int argc, char **argv)
 	create_images(&game);
 	put_images(&game);
 	mlx_key_hook(game.mywindow, set_controls, &game);
+	//mlx_hook(game.mywindow, 17, 0, exit_door, &game);
 	mlx_hook(game.mywindow, 17, 0, (void *)exit, 0);
 	//mlx_hook(game.mywindow, 2, 1L<<0, set_controls, NULL);
 	mlx_loop(game.newmlx);
