@@ -31,7 +31,7 @@ static char	*get_buff(int fd, char *line_ptr)
 		line_ptr = ft_strjoin(line_ptr, buff);
 		if (line_ptr == NULL)
 			return (free (buff), NULL);
-		if (ft_strchr(line_ptr, '\n'))
+		if (ft_strch(line_ptr, '\n'))
 			break ;
 	}
 	free (buff);

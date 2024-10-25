@@ -20,7 +20,7 @@
 # include<stdlib.h>
 
 char	*get_next_line(int fd);
-char	*ft_strchr(char *s, int c);
+char	*ft_strch(char *s, int c);
 size_t	ft_strlen(char *str);
 char	*ft_strjoin(char *s1, char *s2);
 char	*get_ptr_string(char *str);

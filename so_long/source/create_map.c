@@ -22,54 +22,116 @@ static int	width_of_map(char *string)
 		width--;
 	return (width);
 }
+
 static int	add_line(t_long *game, char *line)
 {
-	char **temp;
-	int	i;
+	char	**temp;
+	int		i;
 
 	if (!line)
 		return (0);
 	i = 0;
-	game->heightmap++;
-	temp = (char**)malloc(sizeof(char *) * (game->heightmap + 1));
+	game->heightmp++;
+	temp = (char **)malloc(sizeof(char *) * (game->heightmp + 1));
 	if (!temp)
 		return (0);
-	temp[game->heightmap] = NULL;
-	//printf("height: %d\n",game->heightmap);
-	while (i < game->heightmap - 1)
+	while (i < game->heightmp - 1)
 	{
 		temp[i] = game->map[i];
 		i++;
 	}
 	temp[i] = line;
+	temp[game->heightmp] = NULL;
 	if (game->map)
+	{
 		free(game->map);
+		game->map = NULL;
+	}
 	game->map = temp;
 	return (1);
 }
 
-int create_map(t_long *game, char **argv)
+static int	add_linecpy(t_long *game, char *line)
+{
+	char	**temp;
+	int		i;
+
+	if (!line)
+		return (0);
+	i = 0;
+	game->heightcpy++ ;
+	temp = (char **)malloc(sizeof(char *) * (game->heightcpy + 1));
+	if (!temp)
+		return (0);
+	while (i < game->heightcpy - 1)
+	{
+		temp[i] = game->mapcpy[i];
+		i++;
+	}
+	temp[i] = line;
+	temp[game->heightcpy] = NULL;
+	if (game->mapcpy)
+	{
+		free(game->mapcpy);
+		game->mapcpy = NULL;
+	}
+	game->mapcpy = temp;
+	return (1);
+}
+
+int	create_mapcpy(t_long *game, char **argv)
+{
+	char	*mapcpy;
+	int		line;
+
+	game->fd = open (argv[1], O_RDONLY);
+	if (game->fd < 0)
+		return (0);
+	while (1)
+	{
+		mapcpy = get_next_line(game->fd);
+		if (!mapcpy)
+			break ;
+		line = add_linecpy(game, mapcpy);
+		if (!line)
+		{
+			free (mapcpy);
+			break ;
+		}
+	}
+	close (game->fd);
+	if (game->heightcpy > 0)
+		game->widthcpy = width_of_map(game->mapcpy[0]);
+	else
+		game->widthcpy = 0;
+	return (1);
+}
+
+int	create_map(t_long *game, char **argv)
 {
 	char	*map;
+	int		line;
 
 	game->fd = open(argv[1], O_RDONLY);
-	//printf("argv:%s\n", argv[1]);
 	if (game->fd < 0)
 	{
-		printf("Error: Cannot open Map file. %d\n", game->fd);
-		return(0);
+		ft_printf("Error: Cannot open Map file. %d\n", game->fd);
+		return (0);
 	}
-	while (game->fd)
+	while (1)
 	{
 		map = get_next_line(game->fd);
-		if (!add_line(game, map))
+		line = add_line(game, map);
+		if (!line)
 		{
 			free (map);
 			break ;
 		}
 	}
 	close (game->fd);
-	game->widthmap = width_of_map(game->map[0]);
-	//printf("Map width: %d, height: %d\n", game->widthmap, game->heightmap);
-	return(1);
+	if (game->heightmp > 0)
+		game->widthmp = width_of_map(game->map[0]);
+	else
+		game->widthmp = 0;
+	return (1);
 }

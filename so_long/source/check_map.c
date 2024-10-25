@@ -11,108 +11,123 @@
 /* ************************************************************************** */
 #include "so_long.h"
 
-static int	vertical_wall(t_long *game)
+static void	validate_path(t_long *game, int ht, int wd)
 {
-	int	i;
-	int j;
+	char	tile;
 
-	i = 0;
-	j = game->widthmap;
-	while(i < game->heightmap)
+	if (!game->mapcpy)
 	{
-		if (!(game->map[i][0] == '1' && game->map[i][j - 1] == '1'))
-			return (0);
-		i++;
+		if (ht < 0 || ht >= game->heightcpy || wd < 0 || wd >= game->widthcpy)
+			return ;
+		return ;
+	}
+	tile = game->mapcpy[ht][wd];
+	if (tile == '1' || game->mapcpy[ht][wd] == 'F')
+		return ;
+	if (tile == 'C')
+		game->c_flag++;
+	if (tile == 'E')
+		game->e_flag++;
+	game->mapcpy[ht][wd] = 'F';
+	validate_path(game, ht + 1, wd);
+	validate_path(game, ht - 1, wd);
+	validate_path(game, ht, wd + 1);
+	validate_path(game, ht, wd - 1);
+	return ;
+}
+
+static int	check_wall(t_long *game, int i, int j)
+{
+	if (i == 0)
+	{
+		while (i < game->heightmp)
+		{
+			if (!(game->map[i][0] == '1' && game->map[i][j - 1] == '1'))
+				return (0);
+			i++;
+		}
+	}
+	else if (j == 0)
+	{
+		while (j < game->widthmp)
+		{
+			if (!(game->map[0][j] == '1' && game->map[i - 1][j] == '1'))
+				return (0);
+			j++;
+		}
 	}
 	return (1);
 }
 
-static int	horizontal_wall(t_long *game)
-{
-	int	i;
-	int	j;
-
-	i = game->widthmap;
-	j = 0;
-	while(j < i)
-	{
-		if (game->map[0][i] == '1' && game->map[game->heightmap - 1][j] =='1')
-			return (0);	
-		j++;
-	}
-	return (1);
-}
-
-static void check_walls(t_long *game)
+static int	check_walls(t_long *game)
 {
 	int	v_wall;
 	int	h_wall;
 
-	v_wall = vertical_wall(game);
-	h_wall = horizontal_wall(game);
-	//printf("I am here in check walls");
+	v_wall = check_wall(game, 0, game->widthmp);
+	h_wall = check_wall(game, game->heightmp, 0);
 	if (!v_wall)
 	{
-		//Use ft_printf later
-		printf("\nError in vertical wall of the Map\n");
-		exit_door(game);
+		ft_printf("\nError in vertical wall of the Map\n");
+		return (0);
 	}
 	if (!h_wall)
 	{
-		//Use ft_printf later
-		printf("\nError in horizontal wall of the Map\n");
-		exit_door(game);
+		ft_printf("\nError in horizontal wall of the Map\n");
+		return (0);
 	}
-}
-static void check_count(t_long *game, int height, int width)
-{
-	if (game->map[height][width] != '1' &&
-			game->map[height][width] != '0' &&
-			game->map[height][width] != 'P' &&
-			game->map[height][width] != 'E' &&
-			game->map[height][width] != 'C' &&
-			game->map[height][width] != '\n')
-	{
-		printf("\nError in %c\n", game->map[height][width]);
-		exit_door(game);
-	}
-	if (game->map[height][width] == 'P')
-		game->playercount++;
-	if (game->map[height][width] == 'C')
-		game->columncount++;
-	if (game->map[height][width] == 'E')
-		game->exitcount++;
-	//printf("%i, %i, %i", game->playercount, game->columncount, game->exitcount);
+	return (1);
 }
 
-static void	check_chars(t_long *game)
+static void	check_map_path(t_long *game)
 {
-	int height;
-	int width;
+	int	i;
+	int	j;
 
-	height = 0;
-	while (height < game->heightmap - 1)
+	i = 0;
+	while (i < game->heightmp - 1)
 	{
-		width = 0;
-		while (width <= game->widthmap)
+		j = 0;
+		while (j <= game->widthmp)
 		{
-			check_count(game, height, width);
-			width++;
+			if (game->map[i][j] == 'P')
+			{
+				game->x_axis = i;
+				game->y_axis = j;
+			}
+			j++;
 		}
-		height++;
+		i++;
 	}
-	//printf("%i", game->heightmap);
-	if (!(game->playercount == 1 && game->columncount > 1 && game->exitcount == 1))
+	validate_path(game, game->x_axis, game->y_axis);
+	if (game->c_flag != game->collcount || game->e_flag != 1)
 	{
-		//printf("%i, %i, %i", game->playercount, game->columncount, game->exitcount);
-		printf("\nError in Player or Collectables or Exit\n");
+		ft_printf("\nError in Reaching the Collectables or Exit\n");
 		exit_door(game);
 	}
 }
 
-void	check_map(t_long *game)
+int	check_map(t_long *game)
 {
-	//printf("I am here in check map");
-	check_walls(game);
-	check_chars(game);
+	int	check;
+
+	check = check_map_shape(game);
+	if (check == 0)
+	{
+		ft_printf("\nError, Map is not in Rectangle shape\n");
+		return (exit_door(game));
+	}
+	check = check_walls(game);
+	if (check == 0)
+		return (exit_door(game));
+	check = check_chars(game);
+	if (check == 1)
+	{
+		check_map_path(game);
+		if (game->c_flag != game->collcount || game->e_flag != 1)
+			return (exit_door(game));
+	}
+	else
+		return (0);
+	return (1);
 }

@@ -14,43 +14,55 @@
 # define SO_LONG_H
 
 # include <unistd.h>
-# include <stdio.h>
 # include <fcntl.h>
-# include <errno.h>
-# include <string.h>
-# include "getnextline/get_next_line.h"
-# include "minilibx-linux/mlx.h"
+# include "headers/get_next_line.h"
+# include "headers/ft_printf.h"
+# include "headers/mlx.h"
 
 typedef struct t_start
 {
 	int			fd;
-	int			heightmap;
-	int			widthmap;
-	int			playercount;
-	int			columncount;
+	int			heightmp;
+	int			widthmp;
+	int			heightcpy;
+	int			widthcpy;
+	int			pcount;
+	int			collcount;
 	int			exitcount;
 	int			x_axis;
 	int			y_axis;
 	int			counter;
 	int			collectables;
+	int			c_flag;
+	int			e_flag;
 
-	char	**map;
+	char		**map;
+	char		**mapcpy;
 
-	void	*floor;
-	void	*blocks;
-	void	*player;
-	void	*exit;
-	void	*collectable;
-	void	*newmlx;
-	void	*mywindow;
+	void		*floor;
+	void		*blocks;
+	void		*player;
+	void		*exit;
+	void		*collect;
+	void		*newmlx;
+	void		*mywindow;
 
 }	t_long;
 
-int			exit_door(t_long *game);
-int			create_map(t_long *game, char **argv);
-int			set_controls(int key, t_long *game);
-void	put_images(t_long *game);
+void	*ft_memset(void *s, int c, size_t len);
+void	put_images(t_long *game, int height, int width);
 void	create_images(t_long *game);
-void	check_map(t_long *game);
+char	*ft_strnstr(const char *big, const char *little, size_t len);
+int		exit_door(t_long *game);
+int		create_map(t_long *game, char **argv);
+int		create_mapcpy(t_long *game, char **argv);
+int		set_controls(int key, t_long *game);
+int		check_map(t_long *game);
+int		check_map_shape(t_long *game);
+int		check_chars(t_long *game);
+int		right_move(t_long *game, int i, int j);
+int		valid_char(char *str, t_long *game);
+int		map(t_long *game, char **argv);
+int		exit_button(t_long *game);
 
 #endif

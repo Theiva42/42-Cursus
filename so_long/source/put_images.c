@@ -22,32 +22,27 @@ void	place_player(t_long *game, int height, int width)
 void	place_collectable(t_long *game, int height, int width)
 {
 	mlx_put_image_to_window(game->newmlx,
-		game->mywindow, game->collectable, width * 50, height * 50);
+		game->mywindow, game->collect, width * 50, height * 50);
 	game->collectables++;
 }
 
 void	create_images(t_long *game)
 {
 	int	i;
-	int j;
+	int	j;
 
-	//printf("I am here in create images");
-	game->floor = mlx_xpm_file_to_image(game->newmlx, "assets/floor.xpm", &i, &j);
-	game->blocks = mlx_xpm_file_to_image(game->newmlx, "assets/blocks.xpm", &i, &j);
-	game->player = mlx_xpm_file_to_image(game->newmlx, "assets/mickey.xpm", &i, &j);
-	game->exit = mlx_xpm_file_to_image(game->newmlx, "assets/exit_door.xpm", &i, &j);
-	game->collectable = mlx_xpm_file_to_image(game->newmlx, "assets/collect1.xpm", &i, &j);
+	game->floor = mlx_xpm_file_to_image(game->newmlx, "asset/F.xpm", &i, &j);
+	game->blocks = mlx_xpm_file_to_image(game->newmlx, "asset/T.xpm", &i, &j);
+	game->player = mlx_xpm_file_to_image(game->newmlx, "asset/P.xpm", &i, &j);
+	game->exit = mlx_xpm_file_to_image(game->newmlx, "asset/E.xpm", &i, &j);
+	game->collect = mlx_xpm_file_to_image(game->newmlx, "asset/C.xpm", &i, &j);
 }
 
-void put_images(t_long *game)
+void	put_images(t_long *game, int height, int width)
 {
-	int	height;
-	int	width;
-
 	game->collectables = 0;
 	height = 0;
-	//printf("x-axis: %d, y-axis: %d\n", game->x_axis, game->y_axis);
-	while (height < game->heightmap)
+	while (height < game->heightmp)
 	{
 		width = 0;
 		while (game->map[height][width])
