@@ -13,13 +13,13 @@
 
 int	r_rotate(t_list **stack)
 {
-	t_list	new;
+	t_list	*new;
 
 	if (ft_lstsize(*stack) <= 1)
 		return (0);
-	new = ft_lstlast(*stack) - 1;
-	(ft_lstlast(*stack) - 2)->next = NULL;
-	new->next = *stack;
+	new = ft_lstlast(*stack);
+	(ft_lstlast(*stack) - 1)->next = NULL;
+	new->next = (ft_lstlast(*stack) - 1);
 	*stack = new;
 	return (1);
 }

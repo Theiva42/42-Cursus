@@ -80,17 +80,17 @@ static void	ft_create_list(t_list **stack, int *array)
 
 void	ft_create_stack(t_list **stack, int ac, char **av)
 {
-	char	*args;
+	char	*argstr;
 	char	**args_split;
 	int		*array;
 
-	args = ft_copy_args(ac, av);
-	args_split = ft_split(args, ' ');
+	argstr = ft_argstostr(ac, av);
+	args_split = ft_split(argstr, ' ');
 	//ft_printf("Args_split : %s", args_split[0]);
 	array = ft_create_arr(args_split);
 	//ft_printf("Array : %d", array[0]);
 	ft_create_list(stack, array);
 	free(array);
-	free(args);
+	free(argstr);
 	free_all(args_split);
 }

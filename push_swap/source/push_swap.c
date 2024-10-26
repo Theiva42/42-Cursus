@@ -11,10 +11,10 @@
 /* ************************************************************************** */
 #include "push_swap.h"
 
-static void	loop(t_list **stack_a, t_list **stack_b)
+static void	sorting(t_list **stack_a, t_list **stack_b)
 {
 	int	pos;
-	int	cheapest;
+	int	nearest;
 
 	pos = 0;
 	if (ft_lstsize(*stack_a) > 3)
@@ -27,13 +27,13 @@ static void	loop(t_list **stack_a, t_list **stack_b)
 		count_steps_a(*stack_a);
 		count_steps_b(*stack_a, *stack_b);
 		sum_steps(*stack_a);
-		cheapest = get_cheapest(*stack_a);
-		pos = get_pos(*stack_a, cheapest);
+		nearest = get_min(*stack_a);
+		pos = get_pos(*stack_a, nearest);
 		sort(stack_a, stack_b, pos);
 	}
 }
 
-static void	rev_loop(t_list **stack_a, t_list **stack_b)
+static void	rev_sorting(t_list **stack_a, t_list **stack_b)
 {
 	while (ft_lstsize(*stack_b) > 0)
 	{
@@ -44,7 +44,7 @@ static void	rev_loop(t_list **stack_a, t_list **stack_b)
 	}
 }
 
-static void	loop_a(t_list **stack_a)
+static void	sorting_a(t_list **stack_a)
 {
 	int	pos;
 
@@ -62,7 +62,7 @@ int	main(int ac, char *av[])
 	t_list	**stack_a;
 	t_list	**stack_b;
 
-	if (ac < 1)
+	if (ac <= 1)
 	{
 		ft_error("Error");
 		return (-1);
@@ -78,11 +78,11 @@ int	main(int ac, char *av[])
 	}
 	else
 	{
-		loop(stack_a, stack_b);
+		sorting(stack_a, stack_b);
 		if (ft_lstsize(*stack_a) == 3)
 			sort_three(stack_a);
-		rev_loop(stack_a, stack_b);
-		loop_a(stack_a);
+		rev_sorting(stack_a, stack_b);
+		sorting_a(stack_a);
 	}
 	if (stack_a)
 		free_list(stack_a);

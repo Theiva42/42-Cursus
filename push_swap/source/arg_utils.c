@@ -26,7 +26,7 @@ static int	get_len(char **s)
 	return (len);
 }
 
-char	*ft_copy_args(int ac, char **av)
+char	*ft_argstostr(int ac, char **av)
 {
 	int		i;
 	int		len;

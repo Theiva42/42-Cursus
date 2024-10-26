@@ -69,9 +69,11 @@ void	count_steps_b(t_list *stack_a, t_list *stack_b)
 	while (stack_a)
 	{
 		target = get_target(stack_a, stack_b, size_b);
+		// ft_printf ("Target of %d is %d", stack_a->value, target);
 		if (get_pos(stack_b, target) <= size_b / 2)
 		{
 			stack_a->steps_b = get_pos(stack_b, target);
+			// ft_printf ("Stack_a %d steps_b is %d", stack_a->value, stack_a->steps_b);
 		}
 		else
 		{

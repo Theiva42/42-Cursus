@@ -13,7 +13,7 @@
 
 int	rotate(t_list **stack)
 {
-	t_list	new;
+	t_list	*new;
 
 	new = *stack;
 	*stack = (*stack)->next;

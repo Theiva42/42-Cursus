@@ -81,25 +81,25 @@ void	sum_steps(t_list *stack_a)
 	}
 }
 
-int	get_cheapest(t_list *stack_a)
-{
-	int	min;
-	int	value_min;
+// int	get_nearest(t_list *stack_a)
+// {
+// 	int	min;
+// 	int	value_min;
 
-	if (stack_a)
-	{
-		min = stack_a->total;
-		value_min = stack_a->value;
-		stack_a = stack_a->next;
-	}
-	while (stack_a)
-	{
-		if (stack_a->total < min)
-		{
-			min = stack_a->total;
-			value_min = stack_a->value;
-		}
-		stack_a = stack_a->next;
-	}
-	return (value_min);
-}
+// 	if (stack_a)
+// 	{
+// 		min = stack_a->total;
+// 		value_min = stack_a->value;
+// 		stack_a = stack_a->next;
+// 	}
+// 	while (stack_a)
+// 	{
+// 		if (stack_a->total < min)
+// 		{
+// 			min = stack_a->total;
+// 			value_min = stack_a->value;
+// 		}
+// 		stack_a = stack_a->next;
+// 	}
+// 	return (value_min);
+// }
