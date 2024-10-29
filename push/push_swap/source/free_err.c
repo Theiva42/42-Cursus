@@ -1,39 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   free_Err.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thkumara <thkumara@student.42singapor      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 11:27:21 by thkumara          #+#    #+#             */
-/*   Updated: 2024/10/21 11:37:41 by thkumara         ###   ########.fr       */
+/*   Created: 2024/10/21 14:07:43 by thkumara          #+#    #+#             */
+/*   Updated: 2024/10/21 14:12:37 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
 
-int	push(t_list **source, t_list **dest)
+void	ft_error(char	*msg)
+{
+	ft_putendl_fd(msg, STDERR_FILENO);
+	//ft_printf("Error");
+	exit (EXIT_FAILURE);
+}
+
+void	free_all(char **s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		free (s[i++]);
+	free (s);
+}
+
+void	free_list(t_list **lst)
 {
 	t_list	*temp;
-	if (!source || !dest || !*source || !*dest)
-		return (0);
-	
-	temp = *dest;
-	*dest = *source;
-	*source = (*source)->next;
-	(*dest)->next = temp;
-	return (1);
-}
 
-char	*pa(t_list **stack_a, t_list **stack_b)
-{
-	if (push(stack_b, stack_a) == 0)
-		return (NULL);
-	return ("pa");
-}
-
-char	*pb(t_list **stack_a, t_list **stack_b)
-{
-	if (push(stack_a, stack_b) == 0)
-		return (NULL);
-	return ("pb");
+	if (lst == NULL || *lst == NULL)
+	{
+		free (lst);
+		return ;
+	}
+	while (*lst != NULL)
+	{
+		temp = (*lst)->next;
+		free (*lst);
+		*lst = temp;
+	}
+	free (lst);
 }

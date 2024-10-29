@@ -14,9 +14,9 @@
 int	push(t_list **source, t_list **dest)
 {
 	t_list	*temp;
-	if (!source || !dest || !*source || !*dest)
-		return (0);
 	
+	if (!source || !*source)
+	 	return (0);
 	temp = *dest;
 	*dest = *source;
 	*source = (*source)->next;

@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thkumara <thkumara@student.42singapor      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 11:27:21 by thkumara          #+#    #+#             */
-/*   Updated: 2024/10/21 11:37:41 by thkumara         ###   ########.fr       */
+/*   Created: 2024/05/28 15:28:24 by thkumara          #+#    #+#             */
+/*   Updated: 2024/05/28 15:44:33 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "push_swap.h"
+#include "libft.h"
 
-int	push(t_list **source, t_list **dest)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	t_list	*temp;
-	if (!source || !dest || !*source || !*dest)
-		return (0);
-	
-	temp = *dest;
-	*dest = *source;
-	*source = (*source)->next;
-	(*dest)->next = temp;
-	return (1);
-}
+	size_t	i;
+	size_t	len;
+	char	*newstr;
 
-char	*pa(t_list **stack_a, t_list **stack_b)
-{
-	if (push(stack_b, stack_a) == 0)
+	i = 0;
+	if (s == NULL || f == NULL)
 		return (NULL);
-	return ("pa");
-}
-
-char	*pb(t_list **stack_a, t_list **stack_b)
-{
-	if (push(stack_a, stack_b) == 0)
+	len = ft_strlen(s);
+	newstr = (char *) malloc ((len + 1) * sizeof (char));
+	if (newstr == NULL)
 		return (NULL);
-	return ("pb");
+	while (i < len)
+	{
+		newstr[i] = f(i, s[i]);
+		i++;
+	}
+	newstr[i] = '\0';
+	return (newstr);
 }
