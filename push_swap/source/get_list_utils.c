@@ -82,10 +82,17 @@ int	get_pos(t_list *lst, int num)
 	int	pos;
 
 	pos = 0;
-	while (lst->value != num)
+	// while (lst->value != num)
+	// {
+	// 	pos++;
+	// 	lst = lst->next;
+	// }
+	while (lst != NULL)
 	{
+		if (lst->value == num)
+			return pos;
 		pos++;
 		lst = lst->next;
 	}
-	return (pos);
+	return (-1);
 }

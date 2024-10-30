@@ -32,7 +32,12 @@ void	free_list(t_list **lst)
 {
 	t_list	*temp;
 
-	while (*lst)
+	if (lst == NULL || *lst == NULL)
+	{
+		free (lst);
+		return ;
+	}
+	while (*lst != NULL)
 	{
 		temp = (*lst)->next;
 		free (*lst);

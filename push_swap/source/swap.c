@@ -16,7 +16,7 @@ int	swap(t_list **stack)
 	t_list	*temp1;
 	t_list	*temp2;
 
-	if (!stack || ft_lstsize(*stack) <= 1)
+	if (!*stack || ft_lstsize(*stack) <= 1)
 		return (0);
 	temp1 = *stack;
 	temp2 = temp1->next;

@@ -53,7 +53,7 @@ void				ft_lstadd_back(t_list **lst, t_list *new);
 
 // STACK FUNCTIONS
 char				*ft_argstostr(int ac, char **av);
-void				ft_create_stack(t_list **stack, int ac, char **av);
+int					ft_create_stack(t_list **stack_a, int ac, char **av);
 int					*ft_create_arr(char **s);
 int					ft_is_unique(int num, int *array, int len);
 int					ft_isnum(char *s);
@@ -84,8 +84,8 @@ void				sort(t_list **stack_a, t_list **stack_b, int pos);
 void				sort_reverse(t_list **stack_a, t_list **stack_b, int pos);
 void				sort_a(t_list **stack_a, int pos);
 void				sort_three(t_list **lst);
-int					get_target(t_list *stack_a, t_list *stack_b, int size_b);
-int					get_reverse_target(t_list *dst, t_list *src, int size_dst);
-// int					get_nearest(t_list *stack_a);
+int					get_target(t_list *stack_a, t_list *stack_b);
+int					get_reverse_target(t_list *dst, t_list *src);
+int					get_nearest(t_list *stack_a);
 
 #endif

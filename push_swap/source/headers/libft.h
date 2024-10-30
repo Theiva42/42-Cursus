@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-int					ft_atoi(const char *str);
+long				ft_atoi(const char *str);
 char				*ft_itoa(int n);
 
 size_t				ft_strlen(const char *str);

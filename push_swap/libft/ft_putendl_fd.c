@@ -13,9 +13,8 @@
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	if (*s || fd)
-	{
-		ft_putstr_fd(s, fd);
-		ft_putchar_fd('\n', fd);
-	}
+	if (!s || !*s)
+		return ;
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
 }

@@ -58,10 +58,9 @@ void	sort_reverse(t_list **stack_a, t_list **stack_b, int pos)
 	t_list	*tmp;
 
 	tmp = get_node(*stack_b, pos);
-	while (tmp->steps_a != 0 || tmp->steps_b != 0)
-	{
+	while ((tmp->steps_a != 0 || tmp->steps_b != 0) && (tmp->steps_a < 0 || tmp->steps_b < 0))
 		handle_negative_steps_sort_reverse(tmp, stack_a, stack_b);
+	while ((tmp->steps_a != 0 || tmp->steps_b != 0) && (tmp->steps_a > 0 || tmp->steps_b > 0))
 		handle_positive_steps_sort_reverse(tmp, stack_a, stack_b);
-	}
-	ft_putendl_fd(pa(stack_a, stack_b), STDOUT_FILENO);
+	ft_printf("%s\n",pa(stack_a, stack_b));
 }

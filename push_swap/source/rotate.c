@@ -15,6 +15,8 @@ int	rotate(t_list **stack)
 {
 	t_list	*new;
 
+	if (!*stack || ft_lstsize(*stack) <= 1)
+		return (0);
 	new = *stack;
 	*stack = (*stack)->next;
 	new->next = NULL;

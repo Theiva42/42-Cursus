@@ -62,6 +62,7 @@ int	ft_is_unique(int num, int *array, int len)
 	i = 0;
 	while (i < len)
 	{
+		// ft_printf("Number: %d == %d/n", num, array[i]);
 		if (num == array[i])
 			return (0);
 		i++;

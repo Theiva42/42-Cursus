@@ -19,7 +19,7 @@ t_list	*ft_lst_new(int value)
 	if (!node)
 		return (NULL);
 	node->value = value;
-	//node->index = -1;
+	node->total = 0;
 	node->next = NULL;
 	return (node);
 }
@@ -61,6 +61,7 @@ int	is_list_sorted(t_list *lst)
 		ft_error("Error");
 	while (lst->next)
 	{
+		// ft_printf("%d > %d",lst->value, lst->next->value);
 		if (lst->value > lst->next->value)
 			return (0);
 		lst = lst->next;

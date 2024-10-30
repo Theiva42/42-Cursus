@@ -19,7 +19,7 @@ SOURCE := source/*.c
 PRINTF := libftprintf/*.c
 LIBFT := libft/*.c
 
-$(NAME):
+$(NAME): $(SOURCE) $(PRINTF) $(LIBFT)
 		$(CC) $(CFLAGS) $(SOURCE) $(PRINTF) $(LIBFT) -o $(NAME) -I ./
 
 all : $(NAME)
