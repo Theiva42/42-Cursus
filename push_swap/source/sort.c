@@ -66,7 +66,7 @@ void	sort(t_list **stack_a, t_list **stack_b, int pos)
 	// ft_printf("Size of a in sort: %d",ft_lstsize(*stack_a));
 	while ((tmp->steps_a != 0 || tmp->steps_b != 0) && (tmp->steps_a < 0 || tmp->steps_b < 0))
 		handle_negative_steps_sort(tmp, stack_a, stack_b);
-	while ((tmp->steps_a != 0 || tmp->steps_b != 0) && (tmp->steps_a < 0 || tmp->steps_b < 0))
+	while ((tmp->steps_a != 0 || tmp->steps_b != 0) && (tmp->steps_a > 0 || tmp->steps_b > 0))
 		handle_positive_steps_sort(tmp, stack_a, stack_b);
 	ft_putendl_fd(pb(stack_a, stack_b), STDOUT_FILENO);
 	// ft_printf("Size of a in sort after: %d",ft_lstsize(*stack_a));

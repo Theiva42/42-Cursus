@@ -45,7 +45,7 @@ int	*ft_create_arr(char **s)
 	while (s[i])
 	{
 		num = ft_atoi(s[i]);
-		if (num > 2147483647 || num < -2147483648)
+		if (num > 2147483647 || num < -2147483647)
 		{
 			free(array);
 			return (0);
