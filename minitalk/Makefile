@@ -49,7 +49,7 @@ clean:
 	rm -f $(SERVER_OBJS) $(CLIENT_OBJS)
 
 fclean: clean
-	$(RM) $(SERVER) $(CLIENT)
+	rm -f $(SERVER) $(CLIENT)
 
 re: fclean all
 

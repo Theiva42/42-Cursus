@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thkumara <thkumara@student.42singapor      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 11:27:21 by thkumara          #+#    #+#             */
-/*   Updated: 2024/10/21 11:37:41 by thkumara         ###   ########.fr       */
+/*   Created: 2024/05/20 16:26:21 by thkumara          #+#    #+#             */
+/*   Updated: 2024/05/20 16:27:44 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "push_swap.h"
+#include "libft.h"
 
-int	push(t_list **source, t_list **dest)
+static char	*ft_strcpy(char *dest, char *src)
 {
-	t_list	*temp;
+	int	i;
 
-	if (!source || !*source)
-		return (0);
-	temp = *dest;
-	*dest = *source;
-	*source = (*source)->next;
-	(*dest)->next = temp;
-	return (1);
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
-char	*pa(t_list **stack_a, t_list **stack_b)
+char	*ft_strdup(const char *s)
 {
-	if (push(stack_b, stack_a) == 0)
-		return (NULL);
-	return ("pa");
-}
+	char	*dup_s;
 
-char	*pb(t_list **stack_a, t_list **stack_b)
-{
-	if (push(stack_a, stack_b) == 0)
+	dup_s = (char *)malloc(ft_strlen(s) + 1 * sizeof(char));
+	if (dup_s == NULL)
 		return (NULL);
-	return ("pb");
+	ft_strcpy(dup_s, (char *)s);
+	return (dup_s);
 }

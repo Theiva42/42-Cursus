@@ -11,30 +11,30 @@
 /* ************************************************************************** */
 #include "minitalk.h"
 
-void	signal_handler(int sig)
+void	ft_sig_handler(int sig)
 {
-	static int	bit = 0;
+	static int	pos = 0;
 	static int	i = 0;
 
 	if (sig == SIGUSR1)
-		i |= (0x01 << bit);
-	bit++;
-	if (bit == 8)
+		i |= (0x01 << pos);
+	pos++;
+	if (pos == 8)
 	{
 		if (i == '\0')
 			ft_printf("\nEnd of message\n");
 		else
 			ft_printf("%c", i);
-		bit = 0;
+		pos = 0;
 		i = 0;
 	}
 }
 
-void	setup_signal_handlers(void)
+void	set_sig_handle(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = signal_handler;
+	sa.sa_handler = ft_sig_handler;
 	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
@@ -48,14 +48,13 @@ int	main(int argc, char **argv)
 	(void)argv;
 	if (argc != 1)
 	{
-		ft_printf("Error: Incorrect format\n");
-		ft_printf("Try: ./server\n");
+		ft_printf("Error\n");
+		ft_printf("Try again: ./server\n");
 		return (1);
 	}
 	pid = getpid();
 	ft_printf("PID: %d\n", pid);
-	ft_printf("Waiting for a message...\n");
-	setup_signal_handlers();
+	set_sig_handle();
 	while (1)
 	{
 		pause();

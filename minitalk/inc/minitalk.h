@@ -19,9 +19,9 @@
 # include <stdbool.h>
 # include <limits.h>
 
-void	send_bits(pid_t pid, char c);
-void	signal_handler(int sig);
-void	setup_signal_handlers(void);
+void	ft_to_bits(pid_t pid, char c);
+void	ft_sig_handler(int sig);
+void	set_sig_handle(void);
 void	args_check(int argc, char **argv);
 void	send_msg(pid_t server_pid, char *message);
 int		ft_isdigit(int i);

@@ -1,39 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   swap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thkumara <thkumara@student.42singapor      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 11:27:21 by thkumara          #+#    #+#             */
-/*   Updated: 2024/10/21 11:37:41 by thkumara         ###   ########.fr       */
+/*   Created: 2024/10/21 11:39:57 by thkumara          #+#    #+#             */
+/*   Updated: 2024/10/21 11:45:09 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
 
-int	push(t_list **source, t_list **dest)
+int	swap(t_list **stack)
 {
-	t_list	*temp;
+	t_list	*temp1;
+	t_list	*temp2;
 
-	if (!source || !*source)
+	if (!*stack || ft_lstsize(*stack) <= 1)
 		return (0);
-	temp = *dest;
-	*dest = *source;
-	*source = (*source)->next;
-	(*dest)->next = temp;
+	temp1 = *stack;
+	temp2 = temp1->next;
+	temp1->next = temp2->next;
+	(*stack) = temp2;
+	temp2->next = temp1;
 	return (1);
 }
 
-char	*pa(t_list **stack_a, t_list **stack_b)
+char	*sa(t_list **stack_a)
 {
-	if (push(stack_b, stack_a) == 0)
+	if (swap(stack_a) == 0)
 		return (NULL);
-	return ("pa");
+	return ("sa");
 }
 
-char	*pb(t_list **stack_a, t_list **stack_b)
+char	*sb(t_list **stack_b)
 {
-	if (push(stack_a, stack_b) == 0)
+	if (swap(stack_b) == 0)
 		return (NULL);
-	return ("pb");
+	return ("sb");
+}
+
+char	*ss(t_list **stack_a, t_list **stack_b)
+{
+	if (swap(stack_a) == 0 && swap(stack_b) == 0)
+		return (NULL);
+	return ("ss");
 }

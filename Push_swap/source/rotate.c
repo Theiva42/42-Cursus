@@ -1,39 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thkumara <thkumara@student.42singapor      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 11:27:21 by thkumara          #+#    #+#             */
-/*   Updated: 2024/10/21 11:37:41 by thkumara         ###   ########.fr       */
+/*   Created: 2024/10/21 11:50:02 by thkumara          #+#    #+#             */
+/*   Updated: 2024/10/21 12:01:34 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
 
-int	push(t_list **source, t_list **dest)
+int	rotate(t_list **stack)
 {
-	t_list	*temp;
+	t_list	*new;
 
-	if (!source || !*source)
+	if (!*stack || ft_lstsize(*stack) <= 1)
 		return (0);
-	temp = *dest;
-	*dest = *source;
-	*source = (*source)->next;
-	(*dest)->next = temp;
+	new = *stack;
+	*stack = (*stack)->next;
+	new->next = NULL;
+	ft_lstadd_back(stack, new);
 	return (1);
 }
 
-char	*pa(t_list **stack_a, t_list **stack_b)
+char	*ra(t_list **stack_a)
 {
-	if (push(stack_b, stack_a) == 0)
+	if (rotate(stack_a) == 0)
 		return (NULL);
-	return ("pa");
+	return ("ra");
 }
 
-char	*pb(t_list **stack_a, t_list **stack_b)
+char	*rb(t_list **stack_b)
 {
-	if (push(stack_a, stack_b) == 0)
+	if (rotate(stack_b) == 0)
 		return (NULL);
-	return ("pb");
+	return ("rb");
+}
+
+char	*rr(t_list **stack_a, t_list **stack_b)
+{
+	rotate (stack_a);
+	rotate (stack_b);
+	return ("rr");
 }
