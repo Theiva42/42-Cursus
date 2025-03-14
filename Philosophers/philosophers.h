@@ -18,19 +18,28 @@
 #include <sys/time.h>
 #include <pthread.h>
 
+struct s_table;
+
 typedef struct s_philo
 {
 	int id;
+	int eat_count;
 	pthread_t thread;
 	pthread_mutex_t *left_fork;
 	pthread_mutex_t *right_fork;
+	long long last_meal_time;
+	struct s_table *table;
 }t_philo;
 
 typedef struct s_table
 {
 	int	no_of_philo;
+	int time_to_die;
+	int simulation_running;
+	int	num_times_each_philosopher_must_eat;
 	pthread_mutex_t *forks;
 	pthread_mutex_t print_lock;
+	pthread_mutex_t meal_lock;
 	t_philo	*philo;
 }t_table;
 
