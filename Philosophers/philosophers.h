@@ -35,11 +35,16 @@ typedef struct s_table
 {
 	int	no_of_philo;
 	int time_to_die;
+	int time_to_eat;
+	int time_to_sleep;
 	int simulation_running;
 	int	num_times_each_philosopher_must_eat;
+	int finished_philosophers;
 	pthread_mutex_t *forks;
 	pthread_mutex_t print_lock;
 	pthread_mutex_t meal_lock;
+	pthread_mutex_t simulation_lock;
+	pthread_mutex_t finished_lock;
 	t_philo	*philo;
 }t_table;
 
@@ -47,7 +52,7 @@ void	start_simulation(int argc, char **argv);
 long long	current_time();
 void	print_action(t_table *table, int id, char *action);
 int	ft_strcmp(const char *s1, const char *s2);
-int	ft_isdigit(char c);
+int	ft_isnum(char* c);
 
 
 #endif

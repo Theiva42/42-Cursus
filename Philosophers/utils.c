@@ -23,11 +23,21 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-int	ft_isdigit(char c)
+int	ft_isnum(char *str)
 {
-	if (c > 47 && c < 58)
-		return (2048);
-	return (0);
+	int i = 0;
+
+	if (!str || str[0] == '\0') 
+		return (0);
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 long long current_time()
@@ -38,16 +48,41 @@ long long current_time()
     return (tv.tv_sec * 1000LL + tv.tv_usec / 1000);
 }
 
-void    print_action(t_table *table, int id, char *action)
+// void    print_action(t_table *table, int id, char *action)
+// {
+// 	if (!table) 
+//     {
+//         pthread_mutex_lock(&table->print_lock);
+//         printf("Error: print_action() received NULL table!\n");
+//         pthread_mutex_unlock(&table->print_lock);
+//         return;
+//     }
+// 	if (table->simulation_running)
+// 	{
+// 		if (table->simulation_running)
+//         {
+//             pthread_mutex_lock(&table->print_lock);
+//     		printf("[%lld] Philosopher %d %s\n", current_time(), id, action);
+//     	    pthread_mutex_unlock(&table->print_lock);
+//         }
+// 	}
+// }
+
+void print_action(t_table *table, int id, char *action)
 {
-	if (!table) {
+    if (!table) 
+    {
+        pthread_mutex_lock(&table->print_lock);
         printf("Error: print_action() received NULL table!\n");
+        pthread_mutex_unlock(&table->print_lock);
         return;
     }
-	if (table->simulation_running)
+    pthread_mutex_lock(&table->simulation_lock);
+    if (table->simulation_running)
 	{
-    	pthread_mutex_lock(&table->print_lock);
-    	printf("[%lld] Philosopher %d %s\n", current_time(), id, action);
-    	pthread_mutex_unlock(&table->print_lock);
-	}
+        pthread_mutex_unlock(&table->simulation_lock);
+        pthread_mutex_lock(&table->print_lock);
+        printf("[%lld] Philosopher %d %s\n", current_time(), id, action);
+        pthread_mutex_unlock(&table->print_lock);
+    }
 }

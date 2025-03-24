@@ -14,6 +14,7 @@
 int main(int argc, char **argv)
 {
 	int	i;
+	int value;
 
 	if (argc != 5 && argc != 6)
 	{
@@ -21,26 +22,30 @@ int main(int argc, char **argv)
 		return (1);
 	}
 	i = 1;
-	// while (i <= argc)
-	// {
-	// 	if (ft_strcmp(argv[i], " ") != 0)
-	// 	{
-	// 		printf("Input should not be empty\n");
-	// 		printf("Input Format: ./philo <num_philo> <time_to_die> <time_to_eat> <time_to_sleep> [num_times_each_philo_must_eat]\n");
-	// 		break;
-	// 	}
-	// 	if (argv[i] <= 0)
-	// 	{
-	// 		printf("Input should not have negative values or zero\n");
-	// 		break;
-	// 	}		
-	// 	if (ft_isdigit(atoi(argv[i])) != 0)
-	// 	{
-	// 		printf("Input should be valid number\n");
-	// 		break;
-	// 	}		
-	// 	i++;
-	// }
+	// printf ("argc: %i", argc);
+	while (i < argc)
+	{
+		// printf("arg:%s",argv[i]);
+		// if (ft_strcmp(argv[i], " ") == 0)
+		// {
+		// 	printf("Input should not be empty\n");
+		// 	printf("Input Format: ./philo <num_philo> <time_to_die> <time_to_eat> <time_to_sleep> [num_times_each_philo_must_eat]\n");
+		// 	break;
+		// }
+		value = atoi(argv[i]);
+		if (!ft_isnum(argv[i]))
+		{
+			// printf("arg:%s",argv[i]);
+			printf("Input should be valid number\n");
+			return (0);
+		}
+		if (value <= 0)
+		{
+			printf("Input should not have negative values or zero\n");
+			return (0);
+		}
+		i++;
+	}
 	start_simulation(argc, argv);
 	return (0);
 }
