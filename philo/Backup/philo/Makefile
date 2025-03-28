@@ -14,10 +14,8 @@ NAME	= philo
 CC	= cc
 
 SRCS	= philo.c\
-		monitor_philo.c\
-		philo_routine.c\
-		utils.c\
-		main.c
+		  utils.c\
+		  main.c
 
 OBJS	= $(SRCS:%.c=%.o)
 

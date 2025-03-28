@@ -38,8 +38,8 @@ typedef struct s_table
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				simulation_running;
-	int				num_each_philo_must_eat;
-	int				finished_philos;
+	int				num_times_each_philosopher_must_eat;
+	int				finished_philosophers;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	meal_lock;
 	pthread_mutex_t	simulation_lock;
@@ -49,18 +49,6 @@ typedef struct s_table
 }	t_table;
 
 void		start_simulation(int argc, char **argv);
-void		create_thread(t_table	*table);
-void 		cleanup_simulation(t_table *table);
-void		init_forks(t_table *table);
-void		init_table(t_table *table, int no_of_philo, int time_to_die, int time_to_eat, int time_to_sleep);
-void		init_philo(t_table *table, int argc, char **argv);
-void		one_philo(t_philo *philo, t_table *table);
-void		philo_eat(t_philo *philo, t_table *table);
-void		philo_no_odd_even(t_philo *philo, t_table *table);
-void		*philosopher_routine(void *arg);
-void		philo_eaten_enough(int finished_philos, t_table *table);
-void		check_philo_status(t_table *table, int finished_philos);
-void		*monitor_philosophers(void *arg);
 void		print_action(t_table *table, int id, char *action);
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_isnum(char	*c);
