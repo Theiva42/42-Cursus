@@ -3,15 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thkumara <thkumara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thkumara <thkumara@student.42singapor>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 16:16:16 by thkumara          #+#    #+#             */
-/*   Updated: 2025/03/29 16:21:35 by thkumara         ###   ########.fr       */
+/*   Updated: 2025/04/01 13:33:47 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
-void	execute_commands(t_command *cmd_head)
+int	is_builtin(char	*cmd)
+{
+	if (!cmd)
+		return (0);
+	return (!ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "echo")
+		|| !ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "unset"));
+}
+
+int	execute_builtin(t_command *cmd)
+{
+	if (!cmd || !cmd->argv[0])
+		return (0);
+	if (!ft_strcmp(cmd->argv[0], "cd"))
+	{
+		if(!cmd->argv[1])
+		{
+			write(2, "cd: Argument missing\n", 21);
+			return (1);
+		}
+		if (chdir(cmd->argv[1]) != 0)
+		{
+			perror("cd");
+			return (1);
+		}
+		return (0);
+	}
+	else if (!ft_strcmp(cmd->argv[0], "pwd"))
+	{
+		char cwd[1024];
+		if (getcwd(cwd, sizeof(cwd)))
+			printf("%s\n", cwd);
+		else
+			perror("pwd");
+		return (0);
+	}
+	else if (!ft_strcmp(cmd->argv[0], "echo"))
+		handle_echo(cmd->argv[0]);
+	else if (!ft_strcmp(cmd->argv[0], "export"))
+		handle_export(cmd->argv[1]);
+	else if (!ft_strcmp(cmd->argv[0], "unset"))
+		handle_unset(cmd->argv[1]);
+	else if (!ft_strcmp(cmd->argv[0], "env"))
+		handle_env();
+	else if (!ft_strcmp(cmd->argv[0], "exit"))
+		exit (0);
+	else
+		return (0);
+	return (0);
+}
+void	execute_commands(t_command *cmd_head, char **envp)
 {
 	int fd_in;
 	int fd;
@@ -21,6 +71,12 @@ void	execute_commands(t_command *cmd_head)
 	fd_in = 0;
 	while (cmd_head)
 	{
+		if (is_builtin(cmd_head->argv[0]))
+		{
+			execute_builtin(cmd_head);
+			cmd_head = cmd_head->next;
+			continue;  
+		}
 		if (cmd_head->next && pipe(pipefd) == -1)
 		{
 			perror("pipe failed");
@@ -70,9 +126,11 @@ void	execute_commands(t_command *cmd_head)
 				close(pipefd[1]);
 				close(pipefd[0]);
 			}
-			execvp(cmd_head->argv[0], cmd_head->argv);
-			perror("execvp failed");
-			exit(EXIT_FAILURE);
+			if (execve(cmd_head->argv[0], cmd_head->argv, envp) == -1)
+			{
+				perror("execve failed");
+				exit(EXIT_FAILURE);
+			}
 		}
 		if (fd_in != 0)
 			close(fd_in);
