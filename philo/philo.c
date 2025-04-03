@@ -9,18 +9,19 @@
 /*   Updated: 2025/03/25 16:11:42 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "philo.h"
 
 void	init_table(t_table *table)
 {
-	table->forks = malloc(sizeof(pthread_mutex_t) * no_of_philo);
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->no_of_philo);
 	if (!table->forks)
 	{
 		printf("Memory allocation failed\n");
 		free(table->philo);
 		exit(1);
 	}
-	table->philo = malloc(sizeof(t_philo) * no_of_philo);
+	table->philo = malloc(sizeof(t_philo) * table->no_of_philo);
 	if (!table->philo)
 	{
 		printf("Memory allocation failed\n");
@@ -30,13 +31,14 @@ void	init_table(t_table *table)
 	pthread_mutex_init(&table->meal_lock, NULL);
 	pthread_mutex_init(&table->simulation_lock, NULL);
 	pthread_mutex_init(&table->finished_lock, NULL);
+	table->finished_philos = 0;
 }
 
 void	init_forks(t_table *table)
 {
 	int			i;
 
-	i = 1;	
+	i = 0;	
 	while (i < table->no_of_philo)
 	{
 		pthread_mutex_init(&table->forks[i], NULL);
@@ -51,16 +53,13 @@ void cleanup_simulation(t_table *table)
 
 	i = 0;
     while (i < table->no_of_philo)
-	{
-        pthread_mutex_destroy(&table->forks[i]);
-    	pthread_mutex_destroy(&table->print_lock);
-    	pthread_mutex_destroy(&table->meal_lock);
-    	pthread_mutex_destroy(&table->simulation_lock);
-    	pthread_mutex_destroy(&table->finished_lock);
-    	free(table->forks);
-    	free(table->philo);
-		i++;
-	}
+        pthread_mutex_destroy(&table->forks[i++]);
+    pthread_mutex_destroy(&table->print_lock);
+    pthread_mutex_destroy(&table->meal_lock);
+    pthread_mutex_destroy(&table->simulation_lock);
+    pthread_mutex_destroy(&table->finished_lock);
+    free(table->forks);
+    free(table->philo);
 }
 void	create_thread(t_table	*table)
 {	
@@ -102,12 +101,10 @@ void	start_simulation(int argc, char **argv)
 	table.simulation_running = 1;
 	
 	init_table(&table);
-    	init_forks(&table);
-    	init_philo(&table, argc, argv);
+    init_forks(&table);
+    init_philo(&table, argc, argv);
 	create_thread(&table);
-	if (pthread_mutex_trylock(&table.print_lock) == 0)
-		pthread_mutex_unlock(&table.print_lock);
-	else
+	if (!pthread_mutex_unlock(&table.print_lock))
 		printf("Warning: print_lock is still locked before destroying!\n");
 	cleanup_simulation(&table);
 }

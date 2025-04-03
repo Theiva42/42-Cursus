@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   philo_routine.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thkumara <thkumara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thkumara <thkumara@student.42singapor>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 16:20:02 by thkumara          #+#    #+#             */
-/*   Updated: 2025/03/28 16:20:26 by thkumara         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:38:36 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "philo.h"
 
+#include "philo.h"
 
 void	init_philo(t_table *table, int argc, char **argv)
 {
@@ -40,6 +40,7 @@ void	one_philo(t_philo *philo, t_table *table)
 	pthread_mutex_lock(&table->simulation_lock);
 	table->simulation_running = 0;
 	pthread_mutex_unlock(&table->simulation_lock);
+	exit(0);
 }
 
 void	philo_eat(t_philo *philo, t_table *table)
@@ -101,15 +102,19 @@ void	*philosopher_routine(void *arg)
 	if (table->no_of_philo == 1)
 		return (one_philo(philo, table), NULL);
 	pthread_mutex_lock(&table->simulation_lock);
-	while (table->simulation_running)
+	if (table->simulation_running)
 	{
-		pthread_mutex_unlock(&table->simulation_lock);
-		print_action(table, philo->id, "is thinking");
-		philo_no_odd_even(philo, table);
-		philo_eat(philo, table);
-		pthread_mutex_lock(&table->simulation_lock);
+		while (table->simulation_running)
+		{
+			pthread_mutex_unlock(&table->simulation_lock);
+			print_action(table, philo->id, "is thinking");
+			philo_no_odd_even(philo, table);
+			philo_eat(philo, table);
+			pthread_mutex_lock(&table->simulation_lock);
+		}
 	}
-	pthread_mutex_unlock(&table->simulation_lock);
+	else
+		pthread_mutex_unlock(&table->simulation_lock);
 	print_action(table, philo->id, "is sleeping");
 	usleep(table->time_to_sleep * 1000);
 	return (NULL);

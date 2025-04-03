@@ -117,8 +117,8 @@ void	*monitor_philosophers(void *arg)
 			time_since_last_meal = current_time()
 				- table->philo[i].last_meal_time;
 			eaten_enough = (table->num_times_each_philosopher_must_eat > 0
-					&& table->philo[i].eat_count
-					>= table->num_times_each_philosopher_must_eat);
+				&& table->philo[i].eat_count
+				>= table->num_times_each_philosopher_must_eat);
 			pthread_mutex_unlock(&table->meal_lock);
 			if (time_since_last_meal >= table->time_to_die)
 			{
