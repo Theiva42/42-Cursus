@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thkumara <thkumara@student.42singapor>     +#+  +:+       +#+        */
+/*   By: thkumara <thkumara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 15:20:01 by thkumara          #+#    #+#             */
-/*   Updated: 2025/04/03 15:54:17 by thkumara         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:03:38 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_H
 
 # include <stdio.h>
+# include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/time.h>
@@ -52,10 +53,10 @@ typedef struct s_table
 
 void		start_simulation(int argc, char **argv);
 void		create_thread(t_table	*table);
-void 		cleanup_simulation(t_table *table);
+void		cleanup_simulation(t_table *table);
 void		init_forks(t_table *table);
 void		init_table(t_table *table);
-void		init_philo(t_table *table, int argc, char **argv);
+void		init_philo(t_table *table);
 void		one_philo(t_philo *philo, t_table *table);
 void		philo_eat(t_philo *philo, t_table *table);
 void		philo_no_odd_even(t_philo *philo, t_table *table);

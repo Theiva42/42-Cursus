@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   philo_routine.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thkumara <thkumara@student.42singapor>     +#+  +:+       +#+        */
+/*   By: thkumara <thkumara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 16:20:02 by thkumara          #+#    #+#             */
-/*   Updated: 2025/04/03 15:53:50 by thkumara         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:48:03 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_philo(t_table *table, int argc, char **argv)
+void	init_philo(t_table *table)
 {
 	int			i;
 
@@ -20,13 +20,14 @@ void	init_philo(t_table *table, int argc, char **argv)
 	while (i < table->no_of_philo)
 	{
 		table->philo[i].id = i + 1;
+		table->philo[i].eat_count = 0;
+		table->philo[i].is_full = 0;
 		table->philo[i].left_fork = &table->forks[i];
 		table->philo[i].right_fork = &table->forks[(i + 1)
 			% table->no_of_philo];
 		table->philo[i].table = table;
 		table->philo[i].last_meal_time = current_time();
-		if (argc == 6)
-			table->num_each_philo_must_eat = ft_atoi(argv[5]);
+		memset(&table->philo[i].thread, 0, sizeof(pthread_t));
 		i++;
 	}
 }
@@ -41,6 +42,7 @@ void	one_philo(t_philo *philo, t_table *table)
 	pthread_mutex_lock(&table->simulation_lock);
 	table->simulation_running = 0;
 	pthread_mutex_unlock(&table->simulation_lock);
+	cleanup_simulation(table);
 	exit(0);
 }
 

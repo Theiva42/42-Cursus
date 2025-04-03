@@ -14,12 +14,6 @@
 
 void	init_table(t_table *table)
 {
-	table->philo = malloc(sizeof(t_philo) * table->no_of_philo);
-	if (!table->philo)
-	{
-		printf("Memory allocation failed\n");
-		exit(1);
-	}
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->no_of_philo);
 	if (!table->forks)
 	{
@@ -27,10 +21,17 @@ void	init_table(t_table *table)
 		free(table->philo);
 		exit(1);
 	}
+	table->philo = malloc(sizeof(t_philo) * table->no_of_philo);
+	if (!table->philo)
+	{
+		printf("Memory allocation failed\n");
+		exit(1);
+	}
 	pthread_mutex_init(&table->print_lock, NULL);
 	pthread_mutex_init(&table->meal_lock, NULL);
 	pthread_mutex_init(&table->simulation_lock, NULL);
 	pthread_mutex_init(&table->finished_lock, NULL);
+	table->simulation_running = 1;
 	table->finished_philos = 0;
 }
 
@@ -57,8 +58,19 @@ void	cleanup_simulation(t_table *table)
 	pthread_mutex_destroy(&table->meal_lock);
 	pthread_mutex_destroy(&table->simulation_lock);
 	pthread_mutex_destroy(&table->finished_lock);
+	i = 0;
+	while (i < table->no_of_philo)
+	{
+    	pthread_join(table->philo[i].thread, NULL);
+		i++;
+	}
 	free(table->forks);
-	free(table->philo);
+	if (table->philo)
+    {
+        free(table->philo);
+        table->philo = NULL;
+    }
+    free(table);
 }
 
 void	create_thread(t_table	*table)
@@ -83,10 +95,21 @@ void	create_thread(t_table	*table)
 		printf("Error: Failed to create monitor thread\n");
 		exit (1);
 	}
-	i = -1;
-	while (++i < table->no_of_philo)
-		pthread_join(table->philo[i].thread, NULL);
-	pthread_join(monitor_thread, NULL);
+	i = 0;
+	while (i < table->no_of_philo)
+	{
+		if (pthread_join(table->philo[i].thread, NULL) != 0)
+		{
+			printf("Error joining philosopher thread %d\n", i);
+			exit (1);
+		}
+		i++;
+	}
+	if (pthread_join(monitor_thread, NULL) != 0)
+	{
+		printf("Error joining monitor thread\n");
+        exit(1);
+	}
 }
 
 void	start_simulation(int argc, char **argv)
@@ -97,11 +120,12 @@ void	start_simulation(int argc, char **argv)
 	table.time_to_die = ft_atoi(argv[2]);
 	table.time_to_eat = ft_atoi(argv[3]);
 	table.time_to_sleep = ft_atoi(argv[4]);
-	table.num_each_philo_must_eat = 0;
-	table.simulation_running = 1;
+	if (argc == 6)
+			table.num_each_philo_must_eat = ft_atoi(argv[5]);
 	init_table(&table);
+	// printf("table.num_each_philo_must_eat: %d\n", table.num_each_philo_must_eat);
 	init_forks(&table);
-	init_philo(&table, argc, argv);
+	init_philo(&table);
 	create_thread(&table);
 	// if (!pthread_mutex_unlock(&table.print_lock))
 	// 	printf("Warning: print_lock is still locked before destroying!\n");
