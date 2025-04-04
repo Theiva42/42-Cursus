@@ -47,30 +47,24 @@ void	init_forks(t_table *table)
 	}
 }
 
-void	cleanup_simulation(t_table *table)
+void	init_philo(t_table *table)
 {
-	int		i;
+	int			i;
 
 	i = 0;
 	while (i < table->no_of_philo)
-		pthread_mutex_destroy(&table->forks[i++]);
-	pthread_mutex_destroy(&table->print_lock);
-	pthread_mutex_destroy(&table->meal_lock);
-	pthread_mutex_destroy(&table->simulation_lock);
-	pthread_mutex_destroy(&table->finished_lock);
-	i = 0;
-	while (i < table->no_of_philo)
 	{
-    	pthread_join(table->philo[i].thread, NULL);
+		table->philo[i].id = i + 1;
+		table->philo[i].eat_count = 0;
+		table->philo[i].is_full = 0;
+		table->philo[i].left_fork = &table->forks[i];
+		table->philo[i].right_fork = &table->forks[(i + 1)
+			% table->no_of_philo];
+		table->philo[i].table = table;
+		table->philo[i].last_meal_time = current_time();
+		memset(&table->philo[i].thread, 0, sizeof(pthread_t));
 		i++;
 	}
-	free(table->forks);
-	if (table->philo)
-    {
-        free(table->philo);
-        table->philo = NULL;
-    }
-    free(table);
 }
 
 void	create_thread(t_table	*table)
@@ -81,6 +75,7 @@ void	create_thread(t_table	*table)
 	i = 0;
 	while (i < table->no_of_philo)
 	{
+		printf("creating 1 thread\n");
 		if (pthread_create(&table->philo[i].thread,
 				NULL, philosopher_routine, (void *)&table->philo[i]) != 0)
 		{
@@ -89,6 +84,7 @@ void	create_thread(t_table	*table)
 		}
 		i++;
 	}
+	printf("creating 2 thread\n");
 	if (pthread_create(&monitor_thread, NULL,
 			monitor_philosophers, (void *)table) != 0)
 	{
@@ -126,6 +122,7 @@ void	start_simulation(int argc, char **argv)
 	// printf("table.num_each_philo_must_eat: %d\n", table.num_each_philo_must_eat);
 	init_forks(&table);
 	init_philo(&table);
+	// printf("Philo: %d, Forks: %p\n", table.no_of_philo, (void *)table.forks);
 	create_thread(&table);
 	// if (!pthread_mutex_unlock(&table.print_lock))
 	// 	printf("Warning: print_lock is still locked before destroying!\n");

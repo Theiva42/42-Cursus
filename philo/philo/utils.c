@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thkumara <thkumara@student.42singapor>     +#+  +:+       +#+        */
+/*   By: thkumara <thkumara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 12:32:09 by thkumara          #+#    #+#             */
-/*   Updated: 2025/04/03 14:03:23 by thkumara         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:18:20 by thkumara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_input(int argc, char **argv)
 	i = 1;
 	while (i < argc)
 	{
-		value = atoi(argv[i]);
+		value = ft_atoi(argv[i]);
 		if (!ft_isnum(argv[i]))
 		{
 			printf("Input should be valid number\n");
@@ -76,14 +76,14 @@ long long	current_time(void)
 
 void	print_action(t_table *table, int id, char *action)
 {
+	if (!action)
+		action = NULL;
 	if (!table)
 	{
-		pthread_mutex_lock(&table->print_lock);
 		printf("Error: print_action() received NULL table!\n");
-		pthread_mutex_unlock(&table->print_lock);
 		return ;
 	}
-	if (table->simulation_running)
+	if (table->simulation_running || ft_strcmp(action, "died") == 0)
 	{
 		pthread_mutex_lock(&table->print_lock);
 		printf("[%lld] Philosopher %d %s\n", current_time(), id, action);
